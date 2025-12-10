@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Mastery Practice App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to ensure the footer is at the bottom of the content, not the screen */
+        /* These media queries enhance responsiveness for small screens */
+        @media (min-width: 640px) {
+             #quiz-interface, #summary-screen {
+                min-height: calc(100vh - 128px); 
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600">
+                🧠 Math Mastery Practice
+            </h1>
+            <div id="score-display" class="text-xl font-semibold text-gray-700 hidden">
+                Score: <span id="current-correct">0</span> / <span id="current-total">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <div id="category-selection" class="space-y-8 max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 text-center border-b pb-4">
+                Configure Your Practice Session
+            </h2>
+            
+            <div id="category-options" class="space-y-4 sm:space-y-6">
+                
+                <p class="text-lg sm:text-xl font-semibold text-gray-700">Select Categories and Define Ranges:</p>
+
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm">
+                    <label class="flex items-center space-x-3 w-full mb-3 sm:mb-0">
+                        <input type="checkbox" data-category="squares" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">Squares (N²)</span>
+                    </label>
+                    <div class="flex items-center space-x-2 justify-start sm:justify-end">
+                        <span class="text-gray-500">N from:</span>
+                        <input type="number" data-range-min="squares" value="1" min="1" max="100" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                        <span class="text-gray-500">to:</span>
+                        <input type="number" data-range-max="squares" value="100" min="1" max="100" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                    </div>
+                </div>
+
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm">
+                    <label class="flex items-center space-x-3 w-full mb-3 sm:mb-0">
+                        <input type="checkbox" data-category="squareRoots" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">Square Roots (√x)</span>
+                    </label>
+                    <div class="flex items-center space-x-2 justify-start sm:justify-end">
+                        <span class="text-gray-500">Root N from:</span>
+                        <input type="number" data-range-min="squareRoots" value="1" min="1" max="100" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                        <span class="text-gray-500">to:</span>
+                        <input type="number" data-range-max="squareRoots" value="100" min="1" max="100" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                    </div>
+                </div>
+                
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm">
+                    <label class="flex items-center space-x-3 w-full mb-3 sm:mb-0">
+                        <input type="checkbox" data-category="cubes" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">Cubes (N³)</span>
+                    </label>
+                    <div class="flex items-center space-x-2 justify-start sm:justify-end">
+                        <span class="text-gray-500">N from:</span>
+                        <input type="number" data-range-min="cubes" value="1" min="1" max="50" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                        <span class="text-gray-500">to:</span>
+                        <input type="number" data-range-max="cubes" value="50" min="1" max="50" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                    </div>
+                </div>
+                
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm">
+                    <label class="flex items-center space-x-3 w-full mb-3 sm:mb-0">
+                        <input type="checkbox" data-category="cubeRoots" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">Cube Roots (∛x)</span>
+                    </label>
+                    <div class="flex items-center space-x-2 justify-start sm:justify-end">
+                        <span class="text-gray-500">Root N from:</span>
+                        <input type="number" data-range-min="cubeRoots" value="1" min="1" max="50" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                        <span class="text-gray-500">to:</span>
+                        <input type="number" data-range-max="cubeRoots" value="50" min="1" max="50" class="range-input w-16 sm:w-20 p-1 sm:p-2 border border-gray-300 rounded text-center text-sm" disabled>
+                    </div>
+                </div>
+
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm flex justify-between items-center">
+                    <label class="flex items-center space-x-3 w-full sm:w-auto">
+                        <input type="checkbox" data-category="conversions" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">FDP Conversions</span>
+                    </label>
+                    <div class="text-xs sm:text-sm text-gray-500">Fixed set of common fractions.</div>
+                </div>
+                
+                <div class="category-config p-3 sm:p-4 border border-indigo-200 rounded-lg shadow-sm flex justify-between items-center">
+                    <label class="flex items-center space-x-3 w-full sm:w-auto">
+                        <input type="checkbox" data-category="percentages" class="category-checkbox h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="text-lg font-medium text-gray-900">Quick Percentages</span>
+                    </label>
+                    <div class="text-xs sm:text-sm text-gray-500">e.g., 15% of 240.</div>
+                </div>
+
+            </div>
+
+            <button id="start-session-btn" disabled
+                class="w-full py-3 sm:py-4 bg-gray-400 text-white font-bold text-lg sm:text-xl rounded-lg cursor-not-allowed transition duration-150 shadow-lg">
+                Select at least one category to Start
+            </button>
+            <p id="error-message" class="text-sm text-red-500 text-center hidden">Please ensure min $\le$ max range values.</p>
+        </div>
+
+
+        <div id="quiz-interface" class="hidden max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl space-y-6 sm:space-y-8">
+            
+            <div class="flex justify-between items-center text-lg sm:text-xl font-mono text-gray-700 border-b pb-2">
+                <p class="font-semibold text-indigo-600">Time Taken:</p>
+                <p id="time-display" class="font-bold text-xl sm:text-2xl text-red-600">00:00.00</p>
+            </div>
+            <div class="text-center">
+                <p id="current-category-title" class="text-base sm:text-lg font-semibold text-indigo-600"></p>
+                <p id="question-text" class="text-4xl sm:text-5xl font-extrabold text-gray-900 mt-4 h-16 sm:h-20 flex items-center justify-center"></p>
+            </div>
+
+            <form id="quiz-form" class="space-y-4">
+                <input type="text" id="user-answer" placeholder="Enter your answer" required
+                    class="w-full p-3 sm:p-4 text-center text-xl sm:text-2xl border-4 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-indigo-500 transition duration-150">
+                <button type="submit" id="submit-btn"
+                    class="w-full py-3 sm:py-4 bg-indigo-600 text-white font-bold text-lg sm:text-xl rounded-lg hover:bg-indigo-700 transition duration-150 shadow-lg">
+                    Submit Answer
+                </button>
+            </form>
+
+            <div id="result-message" class="text-center font-bold text-xl sm:text-2xl h-8"></div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button id="end-session-btn"
+                    class="py-2 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150">
+                    End Session
+                </button>
+                
+                <button id="skip-question-btn"
+                    class="py-2 px-3 sm:px-4 text-sm sm:text-base bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition duration-150 shadow-md">
+                    Skip Question
+                </button>
+                
+                <button id="next-question-btn" disabled
+                    class="py-2 px-4 sm:px-6 text-sm sm:text-base bg-green-500 text-white font-semibold rounded-lg opacity-50 cursor-not-allowed hover:bg-green-600 transition duration-150">
+                    Next Question →
+                </button>
+            </div>
+        </div>
+
+
+        <div id="summary-screen" class="hidden max-w-md mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl text-center space-y-4 sm:space-y-6">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-indigo-600">Session Complete!</h2>
+            
+            <div class="space-y-3">
+                <p class="text-lg sm:text-xl font-semibold text-gray-700">Categories: <span id="summary-category" class="text-indigo-600"></span></p>
+                
+                <p class="text-4xl sm:text-5xl font-extrabold text-gray-900">
+                    <span id="summary-correct">0</span> / <span id="summary-total">0</span>
+                </p>
+
+                <p id="summary-percentage" class="text-xl sm:text-2xl font-bold text-green-600">
+                    (0%)
+                </p>
+
+                <div class="pt-3 sm:pt-4 border-t border-gray-200">
+                    <p class="text-base sm:text-lg font-semibold text-gray-700">Average Time Per Question:</p>
+                    <p id="average-time-display" class="text-2xl sm:text-3xl font-extrabold text-red-600">0.00s</p>
+                </div>
+                </div>
+
+            <div id="skipped-summary" class="hidden text-left pt-3 sm:pt-4 border-t border-gray-200">
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3">Skipped Questions (<span id="skipped-count">0</span>)</h3>
+                <ul id="skipped-list" class="space-y-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg max-h-48 overflow-y-auto">
+                    </ul>
+            </div>
+            
+            <button id="restart-app-btn"
+                class="w-full py-3 bg-indigo-600 text-white font-bold text-lg rounded-lg hover:bg-indigo-700 transition duration-150 shadow-lg">
+                Return to Main Menu
+            </button>
+        </div>
+        </main>
+
+    <footer class="bg-gray-100 border-t mt-8">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-xs sm:text-sm text-gray-500">
+            &copy; 2025 Math Mastery App | Built with HTML, TailwindCSS, & Node.js
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
